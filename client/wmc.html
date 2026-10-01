@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WMC Communication Architecture | WaveChat</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .protocol-card {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--light-border);
+      padding: 1.75rem;
+      background: #ffffff;
+      transition: var(--transition);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .protocol-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary);
+    }
+    .protocol-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .sim-node {
+      padding: 1.25rem 1rem;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      border: 2px solid var(--light-border);
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .sim-node.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 16px rgba(79, 70, 229, 0.4);
+      background: #f5f3ff;
+    }
+    .sim-line {
+      height: 4px;
+      background: #e2e8f0;
+      position: relative;
+      overflow: hidden;
+    }
+    .sim-packet {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ef4444;
+      position: absolute;
+      top: -5px;
+      left: 0%;
+      box-shadow: 0 0 8px #ef4444;
+      display: none;
+    }
+    .layer-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-wave sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="index.html">
+        <div class="brand-logo-icon">
+          <i class="bi bi-broadcast-pin"></i>
+        </div>
+        <span class="fs-4 brand-font text-dark">Wave<span class="text-primary">Chat</span></span>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="wmc.html">WMC Concepts</a></li>
+          <li class="nav-item"><a class="nav-link" href="network.html">Network Status</a></li>
+          <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
+          <li class="nav-item"><a class="btn btn-primary-gradient btn-sm ms-lg-2" href="chat.html">Open Chat</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="py-5 bg-white border-bottom">
+    <div class="container text-center">
+      <div class="hero-badge mx-auto mb-3">
+        <i class="bi bi-diagram-3-fill"></i> Subject Demonstration Module
+      </div>
+      <h1 class="fw-bold mb-3">Wireless Mobile Communication (WMC)</h1>
+      <p class="text-secondary mx-auto mb-0" style="max-width: 720px; font-size: 1.1rem;">
+        Detailed technical breakdown of how WaveChat implements client-server architecture, wireless radio frequency transmissions, TCP/IP sockets, and OSI network layers.
+      </p>
+    </div>
+  </header>
+
+  <!-- INTERACTIVE SIMULATION SECTION -->
+  <section class="py-5">
+    <div class="container">
+      <div class="glass-card p-4 p-md-5 mb-5 shadow-sm">
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4 pb-2 border-bottom">
+          <div>
+            <h4 class="fw-bold mb-1">
+              <i class="bi bi-play-circle-fill text-primary me-2"></i> Live Packet Transmission Simulation
+            </h4>
+            <p class="text-muted small mb-0">Trace how a single text packet travels from Client A to Client B through the central server.</p>
+          </div>
+          <button class="btn btn-primary-gradient mt-2 mt-md-0" id="startSimBtn">
+            <i class="bi bi-send me-1"></i> Transmit Packet Across Nodes
+          </button>
+        </div>
+
+        <!-- Visual Flow Pipeline -->
+        <div class="row g-3 align-items-center text-center my-4 position-relative">
+          
+          <!-- Node 1: Client A -->
+          <div class="col-md-3">
+            <div class="sim-node shadow-sm" id="nodeClientA">
+              <span class="layer-badge bg-primary-subtle text-primary mb-2 d-inline-block">Transmitter</span>
+              <div class="fs-1 text-primary mb-1"><i class="bi bi-laptop"></i></div>
+              <h6 class="fw-bold mb-1">CLIENT A</h6>
+              <div class="small text-muted">Station (IP: 192.168.1.10)</div>
+              <div class="badge bg-light text-dark border mt-2 small">Socket.IO Client</div>
+            </div>
+          </div>
+
+          <!-- Connector 1 -->
+          <div class="col-md-1 d-none d-md-block px-0">
+            <div class="text-primary fs-4"><i class="bi bi-arrow-right"></i></div>
+            <div class="small text-muted" style="font-size: 0.65rem;">Wi-Fi 802.11</div>
+          </div>
+
+          <!-- Node 2: Server -->
+          <div class="col-md-4">
+            <div class="sim-node shadow-sm" id="nodeServer">
+              <span class="layer-badge bg-danger-subtle text-danger mb-2 d-inline-block">Central Controller</span>
+              <div class="fs-1 text-danger mb-1"><i class="bi bi-hdd-network"></i></div>
+              <h6 class="fw-bold mb-1">CENTRAL NODE.JS SERVER</h6>
+              <div class="small text-muted">IP: 192.168.1.5 · Port: 3000</div>
+              <div class="badge bg-danger-subtle text-danger border mt-2 small">Routing & MongoDB Buffer</div>
+            </div>
+          </div>
+
+          <!-- Connector 2 -->
+          <div class="col-md-1 d-none d-md-block px-0">
+            <div class="text-primary fs-4"><i class="bi bi-arrow-right"></i></div>
+            <div class="small text-muted" style="font-size: 0.65rem;">4G/5G or Wi-Fi</div>
+          </div>
+
+          <!-- Node 3: Client B -->
+          <div class="col-md-3">
+            <div class="sim-node shadow-sm" id="nodeClientB">
+              <span class="layer-badge bg-success-subtle text-success mb-2 d-inline-block">Receiver</span>
+              <div class="fs-1 text-success mb-1"><i class="bi bi-phone"></i></div>
+              <h6 class="fw-bold mb-1">CLIENT B</h6>
+              <div class="small text-muted">Mobile Node (IP: 192.168.1.18)</div>
+              <div class="badge bg-light text-dark border mt-2 small">Event Listener</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Simulation Step Log Console -->
+        <div class="p-3 bg-dark text-light rounded-3 font-monospace small" id="simLogConsole" style="min-height: 110px;">
+          <div class="text-success"><span class="text-secondary">[Ready]</span> Wireless transmission simulator initialized. Click the button above to begin.</div>
+        </div>
+      </div>
+
+      <!-- COMMUNICATION PROTOCOLS BREAKDOWN (Requirement 15) -->
+      <div class="mb-4 text-center">
+        <h6 class="text-primary fw-bold text-uppercase">Networking Foundation</h6>
+        <h2 class="fw-bold">Communication Protocols in WaveChat</h2>
+        <p class="text-muted">The core networking technologies powering real-time client-server communication.</p>
+      </div>
+
+      <div class="row g-4 mb-5">
+        
+        <!-- HTTP / HTTPS -->
+        <div class="col-md-6 col-lg-4">
+          <div class="protocol-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="layer-badge bg-primary text-white">OSI Layer 7</span>
+              <i class="bi bi-globe2 fs-3 text-primary"></i>
+            </div>
+            <h5 class="fw-bold mb-2">HTTP / HTTPS</h5>
+            <div class="text-primary fw-semibold small mb-2">Stateless Request-Response Protocol</div>
+            <p class="text-secondary small mb-3">
+              Used for initial authentication (registration and login), fetching historical chat logs, uploading user profiles, and establishing the primary handshake with the server.
+            </p>
+            <ul class="text-muted small ps-3 mb-0">
+              <li>Half-duplex request-response cycle</li>
+              <li>Encrypted via TLS/SSL (HTTPS)</li>
+              <li>Used for REST API endpoints</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- WebSocket / Socket.IO -->
+        <div class="col-md-6 col-lg-4">
+          <div class="protocol-card" style="border-left-color: #06b6d4;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="layer-badge bg-info text-white">OSI Layer 7</span>
+              <i class="bi bi-lightning-charge fs-3 text-info"></i>
+            </div>
+            <h5 class="fw-bold mb-2">WebSocket / Socket.IO</h5>
+            <div class="text-info fw-semibold small mb-2">Full-Duplex Bidirectional Channel</div>
+            <p class="text-secondary small mb-3">
+              Provides real-time packet delivery without continuous polling overhead. Once the initial HTTP handshake upgrades to WebSocket, both server and client can transmit instantly.
+            </p>
+            <ul class="text-muted small ps-3 mb-0">
+              <li>Persistent low-overhead TCP connection</li>
+              <li>Event-driven architecture (`private_message`)</li>
+              <li>Sub-millisecond transmission latency</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- TCP / IP -->
+        <div class="col-md-6 col-lg-4">
+          <div class="protocol-card" style="border-left-color: #10b981;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="layer-badge bg-success text-white">OSI Layer 4</span>
+              <i class="bi bi-arrow-repeat fs-3 text-success"></i>
+            </div>
+            <h5 class="fw-bold mb-2">TCP / IP</h5>
+            <div class="text-success fw-semibold small mb-2">Reliable Stream Transport</div>
+            <p class="text-secondary small mb-3">
+              Underneath both HTTP and WebSockets lies TCP (Transmission Control Protocol), which guarantees that every message packet reaches the destination in exact sequence without loss.
+            </p>
+            <ul class="text-muted small ps-3 mb-0">
+              <li>Three-way handshake (SYN, SYN-ACK, ACK)</li>
+              <li>Automatic packet retransmission on error</li>
+              <li>Port-based multiplexing (Port 3000)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Wi-Fi Communication -->
+        <div class="col-md-6 col-lg-6">
+          <div class="protocol-card" style="border-left-color: #8b5cf6;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="layer-badge bg-purple text-white" style="background-color: #8b5cf6;">OSI Layer 1 & 2</span>
+              <i class="bi bi-wifi fs-3" style="color: #8b5cf6;"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Wi-Fi (IEEE 802.11)</h5>
+            <div class="fw-semibold small mb-2" style="color: #8b5cf6;">Local Wireless Area Network (WLAN)</div>
+            <p class="text-secondary small mb-3">
+              Enables laptops and smartphones within the same radio range to associate with a wireless Access Point (AP) or router. Devices obtain local IPv4 addresses (e.g. <code>192.168.x.x</code>) and exchange frames via radio frequencies (2.4 GHz or 5 GHz).
+            </p>
+            <div class="p-3 bg-light rounded-3 small">
+              <strong>College Demonstration:</strong> Running WaveChat on one computer allows any mobile phone or second laptop connected to the same Wi-Fi SSID to communicate seamlessly using the computer's local IP address.
+            </div>
+          </div>
+        </div>
+
+        <!-- 4G / 5G Mobile Networks -->
+        <div class="col-md-6 col-lg-6">
+          <div class="protocol-card" style="border-left-color: #f59e0b;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="layer-badge bg-warning text-dark">Cellular WAN</span>
+              <i class="bi bi-reception-4 fs-3 text-warning"></i>
+            </div>
+            <h5 class="fw-bold mb-2">4G LTE / 5G Cellular Networks</h5>
+            <div class="text-warning fw-semibold small mb-2">Wide-Area Mobile Packet Service</div>
+            <p class="text-secondary small mb-3">
+              When WaveChat is deployed to a cloud server (or exposed via port-forwarding / ngrok), mobile devices connect through cellular base stations (eNodeB / gNodeB) over 4G/5G mobile Internet across different geographic locations.
+            </p>
+            <div class="p-3 bg-light rounded-3 small">
+              <strong>Core Advantage:</strong> Demonstrates high-speed mobile packet data, low-latency 5G network slicing, and ubiquitous client-server connectivity even when devices are miles apart.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- OSI Model Mapping Table -->
+      <div class="glass-card p-4 shadow-sm mb-5">
+        <h5 class="fw-bold mb-3"><i class="bi bi-layers-fill text-primary me-2"></i> OSI & TCP/IP Layer Mapping of WaveChat</h5>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle mb-0 small">
+            <thead class="table-light">
+              <tr>
+                <th>Layer Level</th>
+                <th>OSI Model Layer</th>
+                <th>Protocol in WaveChat</th>
+                <th>Function in Application</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Layer 7</strong></td>
+                <td>Application</td>
+                <td><span class="badge bg-primary">HTTP / WebSocket</span></td>
+                <td>User login, chat event dispatching (<code>private_message</code>, <code>group_message</code>)</td>
+              </tr>
+              <tr>
+                <td><strong>Layer 6</strong></td>
+                <td>Presentation</td>
+                <td><span class="badge bg-dark">JSON / UTF-8</span></td>
+                <td>Payload formatting, text encoding, serialization of message objects</td>
+              </tr>
+              <tr>
+                <td><strong>Layer 5</strong></td>
+                <td>Session</td>
+                <td><span class="badge bg-secondary">Socket.IO Session</span></td>
+                <td>Maintaining client-server heartbeat, online/offline presence states</td>
+              </tr>
+              <tr>
+                <td><strong>Layer 4</strong></td>
+                <td>Transport</td>
+                <td><span class="badge bg-success">TCP (Port 3000)</span></td>
+                <td>End-to-end reliable, sequenced segment delivery and flow control</td>
+              </tr>
+              <tr>
+                <td><strong>Layer 3</strong></td>
+                <td>Network</td>
+                <td><span class="badge bg-info text-dark">IPv4 / IPv6</span></td>
+                <td>Packet routing from Client station IP to Central Server host IP</td>
+              </tr>
+              <tr>
+                <td><strong>Layer 2</strong></td>
+                <td>Data Link</td>
+                <td><span class="badge bg-warning text-dark">IEEE 802.11 MAC</span></td>
+                <td>Wireless CSMA/CA frame transmission over radio channel</td>
+              </tr>
+              <tr>
+                <td><strong>Layer 1</strong></td>
+                <td>Physical</td>
+                <td><span class="badge bg-light text-dark border">RF Waves (2.4/5GHz)</span></td>
+                <td>Modulation of binary bits into electromagnetic radio signals</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer-wave">
+    <div class="container text-center small text-secondary">
+      WaveChat © 2026. Wireless Mobile Communication Academic Project Module.
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const startSimBtn = document.getElementById('startSimBtn');
+    const nodeClientA = document.getElementById('nodeClientA');
+    const nodeServer = document.getElementById('nodeServer');
+    const nodeClientB = document.getElementById('nodeClientB');
+    const simLogConsole = document.getElementById('simLogConsole');
+
+    function logSim(text, color = 'text-white') {
+      const p = document.createElement('div');
+      p.className = `${color} mb-1`;
+      p.innerHTML = `<span class="text-secondary">[${new Date().toLocaleTimeString()}]</span> ${text}`;
+      simLogConsole.appendChild(p);
+      simLogConsole.scrollTop = simLogConsole.scrollHeight;
+    }
+
+    startSimBtn.addEventListener('click', async () => {
+      startSimBtn.disabled = true;
+      simLogConsole.innerHTML = '';
+      
+      // Step 1: Client A initiates
+      nodeClientA.classList.add('active');
+      nodeServer.classList.remove('active');
+      nodeClientB.classList.remove('active');
+      logSim('🚀 [CLIENT A] User types: "Hello Rahul! How is WMC preparation?"', 'text-info');
+      logSim('📡 [CLIENT A] Encapsulating payload into WebSocket frame on TCP Port 3000...', 'text-secondary');
+      
+      await new Promise(r => setTimeout(r, 1200));
+
+      // Step 2: Wireless Air Transmission to Server
+      nodeClientA.classList.remove('active');
+      nodeServer.classList.add('active');
+      logSim('📶 [Wi-Fi/WLAN] Frame transmitted through 802.11 wireless medium to central Access Point.', 'text-warning');
+      logSim('🖥️ [CENTRAL SERVER] Packet arrived at Node.js Server (IP: 192.168.1.5:3000).', 'text-primary');
+      logSim('💾 [DATABASE] Storing packet into MongoDB message collection with timestamp.', 'text-light');
+      logSim('🔍 [SOCKET ROUTING] Looking up active Socket ID mapped to recipient "Rahul"... Found!', 'text-primary');
+
+      await new Promise(r => setTimeout(r, 1500));
+
+      // Step 3: Forward to Client B
+      nodeServer.classList.remove('active');
+      nodeClientB.classList.add('active');
+      logSim('📡 [WIRELESS FORWARD] Server broadcasts packet over Socket.IO room `user_rahul`.', 'text-warning');
+      logSim('📱 [CLIENT B] Packet received on mobile node! Emitting audio chime & rendering bubble.', 'text-success');
+      logSim('✅ [SUCCESS] End-to-end client-server wireless transmission completed in 42ms!', 'text-success fw-bold');
+
+      startSimBtn.disabled = false;
+    });
+  </script>
+</body>
+</html>

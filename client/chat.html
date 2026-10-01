@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Dashboard | WaveChat Wireless Communication</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+
+  <div class="chat-container-wrapper">
+
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="chat-sidebar-backdrop" id="chatSidebarBackdrop"></div>
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="chat-sidebar" id="chatSidebar">
+      <!-- Top Profile & Header -->
+      <div class="sidebar-header">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div class="d-flex align-items-center gap-2">
+            <div class="brand-logo-icon" style="width: 34px; height: 34px; font-size: 1.05rem;">
+              <i class="bi bi-broadcast-pin"></i>
+            </div>
+            <span class="fs-5 brand-font text-dark">Wave<span class="text-primary">Chat</span></span>
+          </div>
+          
+          <div class="d-flex align-items-center gap-1">
+            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newGroupModal" title="Create New Group">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                <li><a class="dropdown-item" href="profile.html"><i class="bi bi-person me-2"></i> My Profile</a></li>
+                <li><a class="dropdown-item" href="groups.html"><i class="bi bi-people me-2"></i> Manage Groups</a></li>
+                <li><a class="dropdown-item" href="wmc.html"><i class="bi bi-diagram-3 me-2 text-primary"></i> WMC Architecture</a></li>
+                <li><a class="dropdown-item" href="network.html"><i class="bi bi-activity me-2 text-success"></i> Network Status</a></li>
+                <li><a class="dropdown-item" href="admin.html"><i class="bi bi-shield-lock me-2 text-warning"></i> Admin Portal</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Current User Card -->
+        <div class="user-profile-badge p-2 bg-light rounded-3 border">
+          <div class="user-avatar-wrapper">
+            <img src="" id="currentUserAvatar" class="user-avatar-img" alt="Avatar">
+            <span class="avatar-status-badge online" title="Socket.IO Active"></span>
+          </div>
+          <div class="overflow-hidden flex-grow-1">
+            <div class="fw-bold text-truncate" id="currentUserName">Connecting...</div>
+            <div class="text-muted small text-truncate" id="currentUserStatusMsg" style="font-size: 0.72rem;">Available</div>
+          </div>
+          <span class="status-pill online ms-auto" id="navbarSignalStatus">
+            <span class="status-dot online"></span>
+            <span>Online</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Search Box -->
+      <div class="sidebar-search-box position-relative">
+        <i class="bi bi-search position-absolute top-50 translate-middle-y text-muted" style="left: 2rem;"></i>
+        <input type="text" id="sidebarSearch" class="sidebar-search-input" placeholder="Search wireless peers & groups...">
+      </div>
+
+      <!-- Tabs: Direct Chats vs Groups -->
+      <div class="sidebar-nav-tabs">
+        <button class="sidebar-tab-btn active" id="tabChatsBtn">
+          <i class="bi bi-chat-dots me-1"></i> Direct Chats
+        </button>
+        <button class="sidebar-tab-btn" id="tabGroupsBtn">
+          <i class="bi bi-people me-1"></i> Groups
+        </button>
+      </div>
+
+      <!-- Conversations Scrollable Area -->
+      <div class="conversations-scroll-list" id="sidebarConversations">
+        <div class="text-center py-5">
+          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+          <div class="text-muted small mt-2">Discovering wireless stations...</div>
+        </div>
+      </div>
+
+      <!-- Sidebar Bottom Shortcut Bar -->
+      <div class="p-2 border-top bg-light d-flex justify-content-around text-center small">
+        <a href="wmc.html" class="text-secondary text-decoration-none py-1" title="WMC Architecture Diagram">
+          <i class="bi bi-diagram-3 d-block fs-6 text-primary"></i>
+          <span style="font-size: 0.7rem;">WMC</span>
+        </a>
+        <a href="network.html" class="text-secondary text-decoration-none py-1" title="Network & Ping Diagnostics">
+          <i class="bi bi-wifi d-block fs-6 text-success"></i>
+          <span style="font-size: 0.7rem;">Network</span>
+        </a>
+        <a href="groups.html" class="text-secondary text-decoration-none py-1" title="All Groups">
+          <i class="bi bi-people d-block fs-6 text-info"></i>
+          <span style="font-size: 0.7rem;">Groups</span>
+        </a>
+        <a href="profile.html" class="text-secondary text-decoration-none py-1" title="Edit Profile">
+          <i class="bi bi-person d-block fs-6 text-dark"></i>
+          <span style="font-size: 0.7rem;">Profile</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN CHAT AREA -->
+    <main class="chat-main-area">
+
+      <!-- EMPTY STATE (No conversation opened yet) -->
+      <div class="chat-empty-state" id="chatEmptyState">
+        <div class="chat-empty-icon">
+          <i class="bi bi-broadcast"></i>
+        </div>
+        <h4 class="fw-bold mb-2">WaveChat Wireless Client-Server Station</h4>
+        <p class="text-muted mb-4" style="max-width: 480px;">
+          Select a peer from the left sidebar to start one-to-one wireless messaging, or join a group to broadcast packets to multiple stations simultaneously.
+        </p>
+        <div class="d-flex flex-wrap gap-2 justify-content-center">
+          <button class="btn btn-outline-primary btn-sm rounded-pill d-lg-none" id="mobileSidebarToggle">
+            <i class="bi bi-list me-1"></i> Open Peer List
+          </button>
+          <a href="wmc.html" class="btn btn-light border btn-sm rounded-pill">
+            <i class="bi bi-diagram-3 me-1 text-primary"></i> View WMC Packet Flow
+          </a>
+          <a href="network.html" class="btn btn-light border btn-sm rounded-pill">
+            <i class="bi bi-speedometer2 me-1 text-success"></i> Test Wi-Fi Latency
+          </a>
+        </div>
+      </div>
+
+      <!-- ACTIVE CHAT VIEW (Shown when a conversation is active) -->
+      <div class="d-flex flex-column h-100 d-none" id="chatActiveState">
+        <!-- Chat Header -->
+        <header class="chat-header" id="chatHeaderArea">
+          <!-- Filled dynamically by chat.js -->
+        </header>
+
+        <!-- Messages Container -->
+        <section class="chat-messages-container" id="chatMessagesList">
+          <!-- Messages will be rendered here dynamically -->
+        </section>
+
+        <!-- Typing Indicator Bubble -->
+        <div class="px-4 d-none" id="typingIndicatorBox">
+          <div class="typing-indicator-bubble">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="text-muted ms-2 small" id="typingText" style="font-size: 0.75rem;">User is typing...</span>
+          </div>
+        </div>
+
+        <!-- Input Box -->
+        <footer class="chat-input-area">
+          <form class="chat-input-form" id="messageForm">
+            <button type="button" class="btn btn-link text-muted p-0 me-1" title="Wireless Packet Ready">
+              <i class="bi bi-wifi text-primary"></i>
+            </button>
+            <input type="text" class="chat-input-field" id="messageInput" placeholder="Type a message to transmit over Wi-Fi..." autocomplete="off" required>
+            <button type="submit" class="btn-send-message" id="sendBtn" title="Transmit Message">
+              <i class="bi bi-send-fill" style="transform: rotate(45deg); display: inline-block;"></i>
+            </button>
+          </form>
+        </footer>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- CREATE GROUP MODAL -->
+  <div class="modal fade" id="newGroupModal" tabindex="-1" aria-labelledby="newGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow-lg">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold" id="newGroupModalLabel">
+            <i class="bi bi-people-fill text-primary me-2"></i> Create Wireless Multicast Group
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="createGroupForm">
+          <div class="modal-body p-4">
+            <div class="mb-3">
+              <label class="form-label fw-semibold small text-muted">Group Name</label>
+              <input type="text" class="form-control" id="groupNameInput" placeholder="e.g. WMC Study Circle" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold small text-muted">Description (Optional)</label>
+              <input type="text" class="form-control" id="groupDescInput" placeholder="Purpose of this broadcast room">
+            </div>
+            <div class="mb-2">
+              <label class="form-label fw-semibold small text-muted">Select Peers to Add as Members</label>
+              <div class="p-3 bg-light rounded-3 border" style="max-height: 180px; overflow-y: auto;" id="groupMembersSelect">
+                <div class="text-center text-muted small">Loading users...</div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-top bg-light">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary-gradient btn-sm px-4" id="submitCreateGroupBtn">Create Group</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Socket.IO Client Library (served automatically by Node.js server) -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- Application Client Scripts -->
+  <script src="js/auth.js"></script>
+  <script src="js/socket.js"></script>
+  <script src="js/groups.js"></script>
+  <script src="js/chat.js"></script>
+</body>
+</html>

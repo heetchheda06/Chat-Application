@@ -1,0 +1,30 @@
+{
+  "name": "wavechat",
+  "version": "1.0.0",
+  "description": "Wireless Chat Application Using Client-Server Communication for Wireless Mobile Communication (WMC)",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js"
+  },
+  "keywords": [
+    "chat",
+    "wireless-communication",
+    "socketio",
+    "express",
+    "nodejs",
+    "mongodb",
+    "wmc-project"
+  ],
+  "author": "WaveChat Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.2",
+    "socket.io": "^4.8.1"
+  }
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WaveChat | Wireless Client-Server Real-Time Communication</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-wave sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="index.html">
+        <div class="brand-logo-icon">
+          <i class="bi bi-broadcast-pin"></i>
+        </div>
+        <span class="fs-4 brand-font text-dark">Wave<span class="text-primary">Chat</span></span>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="wmc.html">WMC Concepts</a></li>
+          <li class="nav-item"><a class="nav-link" href="network.html">Network Status</a></li>
+          <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
+          <li class="nav-item ms-lg-2">
+            <a class="btn btn-outline-primary-custom btn-sm" href="login.html">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary-gradient btn-sm" href="register.html">Get Started</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section text-center">
+    <div class="container position-relative">
+      <div class="hero-badge">
+        <i class="bi bi-wifi"></i> Wireless Mobile Communication (WMC) Project
+      </div>
+      <h1 class="display-3 fw-bold mb-3">
+        Wave<span class="text-primary">Chat</span>
+      </h1>
+      <p class="lead fw-semibold text-primary mb-3">
+        "Connect. Communicate. In Real Time."
+      </p>
+      <p class="text-secondary mx-auto mb-4" style="max-width: 680px; font-size: 1.15rem;">
+        A real-time wireless chat application demonstrating client-server communication using Wi-Fi, mobile networks, HTTP, TCP/IP, and WebSocket technology.
+      </p>
+      <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
+        <a href="register.html" class="btn btn-primary-gradient btn-lg">
+          <i class="bi bi-chat-dots-fill me-2"></i> Get Started
+        </a>
+        <a href="login.html" class="btn btn-outline-primary-custom btn-lg">
+          <i class="bi bi-box-arrow-in-right me-2"></i> Login
+        </a>
+        <a href="wmc.html" class="btn btn-light border btn-lg">
+          <i class="bi bi-diagram-3-fill me-2 text-primary"></i> View WMC Concepts
+        </a>
+      </div>
+
+      <!-- Live Wireless Communication Architecture Diagram -->
+      <div class="glass-card p-4 mx-auto text-start" style="max-width: 900px;">
+        <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+          <div class="fw-bold small text-uppercase text-muted">
+            <i class="bi bi-diagram-2 me-1"></i> Client-Server Wireless Architecture Flow
+          </div>
+          <span class="badge bg-success-subtle text-success border border-success-subtle">
+            <i class="bi bi-activity"></i> Active Node.js & Socket.IO
+          </span>
+        </div>
+        
+        <div class="row g-3 text-center align-items-center">
+          <div class="col-md-3">
+            <div class="p-3 bg-white rounded-3 border shadow-sm">
+              <i class="bi bi-laptop fs-1 text-primary"></i>
+              <h6 class="fw-bold mt-2 mb-1">Client A (Sender)</h6>
+              <span class="badge bg-light text-secondary border small">Wi-Fi Station 1</span>
+              <p class="text-muted small mt-2 mb-0">Emits <code>private_message</code></p>
+            </div>
+          </div>
+          <div class="col-md-1 d-none d-md-block text-primary fs-3">
+            <i class="bi bi-arrow-right-short"></i>
+            <div class="small text-muted" style="font-size: 0.65rem;">TCP/IP</div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 bg-primary text-white rounded-3 shadow">
+              <i class="bi bi-hdd-network fs-1"></i>
+              <h6 class="fw-bold mt-2 mb-1">WaveChat Server</h6>
+              <span class="badge bg-white text-primary small">Node.js + Express + Socket.IO</span>
+              <p class="small text-white-50 mt-2 mb-0">Processes Packet & Stores in MongoDB</p>
+            </div>
+          </div>
+          <div class="col-md-1 d-none d-md-block text-primary fs-3">
+            <i class="bi bi-arrow-right-short"></i>
+            <div class="small text-muted" style="font-size: 0.65rem;">WebSocket</div>
+          </div>
+          <div class="col-md-3">
+            <div class="p-3 bg-white rounded-3 border shadow-sm">
+              <i class="bi bi-phone fs-1 text-success"></i>
+              <h6 class="fw-bold mt-2 mb-1">Client B (Receiver)</h6>
+              <span class="badge bg-light text-secondary border small">4G/5G / Wi-Fi</span>
+              <p class="text-muted small mt-2 mb-0">Listens on <code>receive_message</code></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Features Section -->
+  <section class="py-5 bg-white">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h6 class="text-primary fw-bold text-uppercase">Core Functionality</h6>
+        <h2 class="fw-bold">Engineered for Real-Time Wireless Transmission</h2>
+        <p class="text-muted">Demonstrating all standard networking requirements of Wireless Mobile Communication.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon-wrapper">
+              <i class="bi bi-lightning-charge"></i>
+            </div>
+            <h5 class="fw-bold">Real-Time 1-to-1 Chat</h5>
+            <p class="text-secondary small">
+              Instantaneous full-duplex communication between two wireless stations using WebSocket events with millisecond latency.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon-wrapper">
+              <i class="bi bi-people"></i>
+            </div>
+            <h5 class="fw-bold">Group Broadcasting</h5>
+            <p class="text-secondary small">
+              Simulates wireless multicast where a single packet sent from user A is distributed to all registered group nodes simultaneously.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon-wrapper">
+              <i class="bi bi-circle-fill text-success fs-5"></i>
+            </div>
+            <h5 class="fw-bold">Online/Offline Presence</h5>
+            <p class="text-secondary small">
+              Socket heartbeat packets track connection drops and signal status changes dynamically across all connected wireless nodes.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon-wrapper">
+              <i class="bi bi-database"></i>
+            </div>
+            <h5 class="fw-bold">Chat History & Persistence</h5>
+            <p class="text-secondary small">
+              Persistent message storage with MongoDB & Mongoose (plus transparent local fallback) keeps past packets preserved after refresh.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon-wrapper">
+              <i class="bi bi-wifi"></i>
+            </div>
+            <h5 class="fw-bold">Wi-Fi & 4G/5G Compatibility</h5>
+            <p class="text-secondary small">
+              Seamless communication across devices connected to the same WLAN access point, or across different IP subnets on mobile carriers.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon-wrapper">
+              <i class="bi bi-shield-check"></i>
+            </div>
+            <h5 class="fw-bold">Secure Authentication</h5>
+            <p class="text-secondary small">
+              Industry-standard password encryption with bcryptjs and stateless access management via JSON Web Tokens (JWT).
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Stack Section -->
+  <section class="py-5" style="background-color: #f8fafc;">
+    <div class="container text-center">
+      <h6 class="text-primary fw-bold text-uppercase">Under The Hood</h6>
+      <h2 class="fw-bold mb-4">Technology Stack</h2>
+      <div class="d-flex flex-wrap justify-content-center gap-3">
+        <span class="badge bg-white text-dark border p-3 fs-6 shadow-sm"><i class="bi bi-filetype-html text-danger me-1"></i> HTML5</span>
+        <span class="badge bg-white text-dark border p-3 fs-6 shadow-sm"><i class="bi bi-filetype-css text-primary me-1"></i> CSS3</span>
+        <span class="badge bg-white text-dark border p-3 fs-6 shadow-sm"><i class="bi bi-filetype-js text-warning me-1"></i> JavaScript</span>
+        <span class="badge bg-white text-dark border p-3 fs-6 shadow-sm"><i class="bi bi-bootstrap text-purple me-1"></i> Bootstrap 5</span>
+        <span class="badge bg-white text-dark border p-3 fs-6 shadow-sm"><i class="bi bi-server text-success me-1"></i> Node.js</span>
+        <span class="badge bg-white text-dark border p-3 fs-6 shadow-sm"><i class="bi bi-terminal text-dark me-1"></i> Express.js</span>
+        <span class="badge bg-white text-dark border p-3 fs-6 shadow-sm"><i class="bi bi-plug text-primary me-1"></i> Socket.IO</span>
+        <span class="badge bg-white text-dark border p-3 fs-6 shadow-sm"><i class="bi bi-database text-success me-1"></i> MongoDB</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer-wave">
+    <div class="container">
+      <div class="row g-4 mb-4">
+        <div class="col-md-5">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="brand-logo-icon" style="width: 32px; height: 32px; font-size: 1rem;">
+              <i class="bi bi-broadcast-pin"></i>
+            </div>
+            <span class="fs-4 brand-font text-white">Wave<span class="text-primary">Chat</span></span>
+          </div>
+          <p class="small text-secondary">
+            College Mini/Major Project for <strong>Wireless Mobile Communication (WMC)</strong>.<br>
+            Demonstrating Client-Server Architecture, Socket.IO, TCP/IP, and Wireless Data Transmission.
+          </p>
+        </div>
+        <div class="col-md-3">
+          <h6>Quick Navigation</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2"><a href="index.html">Home</a></li>
+            <li class="mb-2"><a href="wmc.html">WMC Visual Architecture</a></li>
+            <li class="mb-2"><a href="network.html">Network & Latency Diagnostics</a></li>
+            <li class="mb-2"><a href="admin.html">Admin Portal</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6>Test Over Local Wi-Fi</h6>
+          <p class="small text-secondary mb-2">
+            Connect any phone to your computer's Wi-Fi network and open the server's local IP address on port 3000.
+          </p>
+          <a href="network.html" class="btn btn-outline-light btn-sm">
+            <i class="bi bi-wifi me-1"></i> View Local Wi-Fi IP
+          </a>
+        </div>
+      </div>
+      <div class="border-top border-secondary pt-3 text-center small text-secondary">
+        WaveChat © 2026. Built for Wireless Mobile Communication Academic Project Demonstration.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
